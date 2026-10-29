@@ -1,4 +1,4 @@
-# WeightFun relay — setup
+# Upstride relay — setup
 
 One Cloudflare Worker feeds both integrations. Free tier covers this comfortably.
 
@@ -27,7 +27,7 @@ npx wrangler deploy
 ```
 
 Note the URL it prints — something like
-`https://weightfun-relay.your-name.workers.dev`. That's `<RELAY>` from here on.
+`https://upstride-relay.your-name.workers.dev`. That's `<RELAY>` from here on.
 
 ## 2. Make a relay token
 

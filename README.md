@@ -1,4 +1,4 @@
-# WeightFun
+# Upstride
 
 Gamified weight loss. You set three weights; the app turns the gap into a
 calorie-deficit target and lets you chip away at it.
@@ -20,7 +20,7 @@ full-screen like a native app.
 ```bash
 npm start            # http://localhost:4173
 npm test             # 72 unit tests: calorie engine + relay helpers
-npm run build:single # one self-contained dist/weightfun.html
+npm run build:single # one self-contained dist/upstride.html
 ```
 
 Any static server works (`python3 -m http.server`, Netlify, GitHub Pages, S3).

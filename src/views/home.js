@@ -61,7 +61,7 @@ function header(streak) {
       el('span', { text: cold ? 'No streak' : label }),
     ]),
     el('div', { style: { textAlign: 'right' } }, [
-      el('div', { style: { fontSize: '19px', fontWeight: '800', letterSpacing: '-.4px' }, text: 'WeightFun' }),
+      el('div', { style: { fontSize: '19px', fontWeight: '800', letterSpacing: '-.4px' }, text: 'Upstride' }),
       streak.atRisk
         ? el('div', { style: { fontSize: '11px', color: 'var(--warn)' }, text: 'Log yesterday to keep it' })
         : null,

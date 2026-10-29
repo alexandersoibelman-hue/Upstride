@@ -1,5 +1,5 @@
 /**
- * WeightFun relay — a single Cloudflare Worker sitting between your phone,
+ * Upstride relay — a single Cloudflare Worker sitting between your phone,
  * Whoop, and the app.
  *
  * It exists because neither source can be reached from a browser:
@@ -210,7 +210,7 @@ async function whoopCallback(request, env, url) {
       // Fall through to the confirmation page on a malformed return URL.
     }
   }
-  return html('Whoop connected. You can close this tab and return to WeightFun.');
+  return html('Whoop connected. You can close this tab and return to Upstride.');
 }
 
 async function exchange(env, fields) {
@@ -442,7 +442,7 @@ function range(url) {
 function html(message, statusCode = 200) {
   return new Response(
     `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-     <title>WeightFun relay</title>
+     <title>Upstride relay</title>
      <body style="font:16px/1.6 -apple-system,system-ui,sans-serif;background:#08090d;color:#f2f4f8;display:grid;place-items:center;min-height:100vh;margin:0;padding:24px">
      <p style="max-width:34ch;text-align:center">${message}</p>`,
     { status: statusCode, headers: { 'Content-Type': 'text/html; charset=utf-8' } },

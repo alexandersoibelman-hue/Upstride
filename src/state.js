@@ -9,7 +9,13 @@
 
 import { stripSyncedValues, todayKey } from './calc.js';
 
-const STORAGE_KEY = 'weightfun.state.v1';
+const STORAGE_KEY = 'upstride.state.v1';
+/**
+ * The key used before the app was renamed from WeightFun. Read once on load so
+ * an existing log survives the rename; left in place afterwards as a backup
+ * rather than deleted.
+ */
+const LEGACY_STORAGE_KEY = 'weightfun.state.v1';
 const listeners = new Set();
 
 /** Shape of a brand new install. */
@@ -103,10 +109,10 @@ let state = load();
 function load() {
   probeStorage();
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = localStorage.getItem(STORAGE_KEY) ?? localStorage.getItem(LEGACY_STORAGE_KEY);
     return hydrate(raw ? JSON.parse(raw) : null);
   } catch (err) {
-    console.warn('[WeightFun] Could not read saved state, starting fresh.', err);
+    console.warn('[Upstride] Could not read saved state, starting fresh.', err);
     return defaultState();
   }
 }
@@ -140,7 +146,7 @@ function persist() {
     storage.error = err?.name === 'QuotaExceededError'
       ? 'This device is out of storage space.'
       : 'This browser is blocking local storage (private browsing often does).';
-    console.warn('[WeightFun] Could not save state.', err);
+    console.warn('[Upstride] Could not save state.', err);
     return false;
   }
 }

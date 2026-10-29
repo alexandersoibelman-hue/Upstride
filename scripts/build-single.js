@@ -4,7 +4,7 @@
  *
  *   node scripts/build-single.js [outfile]
  *
- * Produces dist/weightfun.html — no external requests at all, so it works on
+ * Produces dist/upstride.html — no external requests at all, so it works on
  * hosts with a strict CSP (and can be emailed, or opened straight off disk).
  *
  * The app is plain ES modules with no cycles, so bundling is a concatenation
@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
  * supplies its own <head>.
  */
 const FULL = args.includes('--full');
-const OUT = path.resolve(ROOT, args.find((a) => !a.startsWith('--')) || 'dist/weightfun.html');
+const OUT = path.resolve(ROOT, args.find((a) => !a.startsWith('--')) || 'dist/upstride.html');
 
 /**
  * Dependency order: a module may only rely on ones above it.
@@ -167,7 +167,7 @@ if (FULL) {
     .replace(/\s*<script\b[^>]*><\/script>\s*/gi, '\n')
     .trim();
 
-  out = `<title>WeightFun</title>\n${style}\n\n${body}\n\n${script}\n`;
+  out = `<title>Upstride</title>\n${style}\n\n${body}\n\n${script}\n`;
 }
 
 await fs.mkdir(path.dirname(OUT), { recursive: true });

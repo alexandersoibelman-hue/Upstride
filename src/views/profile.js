@@ -122,7 +122,7 @@ function dataCard(state, rerender) {
   const download = () => {
     const blob = new Blob([exportJSON()], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
-    const a = el('a', { href: url, download: `weightfun-${new Date().toISOString().slice(0, 10)}.json` });
+    const a = el('a', { href: url, download: `upstride-${new Date().toISOString().slice(0, 10)}.json` });
     a.click();
     URL.revokeObjectURL(url);
     toast('Exported');

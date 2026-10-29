@@ -1,4 +1,4 @@
-name = "weightfun-relay"
+name = "upstride-relay"
 main = "worker.js"
 compatibility_date = "2026-01-01"
 
