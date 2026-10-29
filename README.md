@@ -57,7 +57,11 @@ ES modules can't load over `file://`, so it does need to be *served* rather than
 opened directly — or use the single-file build, which has no module imports and
 opens straight off disk.
 
-`.github/workflows/pages.yml` runs the tests, then publishes the app to GitHub
+`npm run build:site` assembles the deployable site into `_site/`. Every host
+calls that one script rather than repeating the steps in its own config, so
+two deploys of the same commit cannot drift apart.
+
+`.github/workflows/pages.yml` runs the tests, then publishes `_site` to GitHub
 Pages **as a single self-contained file** — `build:single --full` inlines the
 stylesheet and the script into the real document.
 
@@ -67,6 +71,24 @@ failure: the app renders, but anything styled by rules the cached copy predates
 silently collapses. It cost a round of debugging when new chart bars came back
 zero-width on a phone while every earlier screen looked fine. One file cannot
 desynchronise with itself.
+
+## Deploying elsewhere
+
+Any static host works; point it at `npm run build:site` with an output
+directory of `_site`. `.node-version` pins Node so the host matches CI.
+
+**Cloudflare Pages** — Workers & Pages → Create → Pages → Connect to Git:
+
+| Setting | Value |
+| --- | --- |
+| Project name | `upstride` — this is what sets `upstride.pages.dev` |
+| Production branch | `claude/weight-loss-gamification-app-qddhc7` |
+| Framework preset | None |
+| Build command | `npm run build:site` |
+| Output directory | `_site` |
+
+Nothing in the app assumes a path or an origin, so the same build serves from
+a project subpath, a `pages.dev` subdomain, or a bare domain unchanged.
 
 ## Screens
 

@@ -8,7 +8,8 @@
     "start": "node scripts/serve.js",
     "dev": "node scripts/serve.js",
     "test": "node --test \"test/**/*.test.js\"",
-    "build:single": "node scripts/build-single.js"
+    "build:single": "node scripts/build-single.js",
+    "build:site": "node scripts/build-site.js"
   },
   "engines": {
     "node": ">=18"

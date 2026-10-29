@@ -42,22 +42,7 @@ jobs:
       - uses: actions/configure-pages@v5
 
       - name: Assemble the site
-        run: |
-          mkdir -p _site
-          # Ship ONE self-contained file. A multi-file deploy lets a browser pair
-          # a freshly fetched page with a stylesheet it still has cached, which
-          # renders the app subtly broken; a single file cannot desynchronise.
-          npm run build:single -- _site/index.html --full
-          cp _site/index.html _site/standalone.html
-          cp manifest.webmanifest _site/
-          touch _site/.nojekyll
-          # A CNAME file at the repo root switches the site onto a custom
-          # domain. It is copied only if present, because publishing one before
-          # DNS resolves takes the github.io URL down with it: Pages starts
-          # redirecting there and the domain does not answer yet.
-          [ -f CNAME ] && cp CNAME _site/ || true
-          # Sources published alongside for reading, not for the app to load.
-          cp -r styles src _site/
+        run: npm run build:site
 
       - uses: actions/upload-pages-artifact@v3
         with:
