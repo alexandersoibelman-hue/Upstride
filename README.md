@@ -11,9 +11,23 @@ dependencies — it's static files and `localStorage`. Syncing real Whoop and Ap
 Health data additionally needs a small relay you deploy yourself; see below for
 why that's unavoidable.
 
-**Live:** <https://alexandersoibelman-hue.github.io/WeightFun/> — deployed from
+**Live:** <https://alexandersoibelman-hue.github.io/upstride/> — deployed from
 this branch on every push. Add it to your phone's home screen and it runs
 full-screen like a native app.
+
+### Moving to a custom domain
+
+Put the bare hostname in a `CNAME` file at the repo root, e.g. `upstride.app`,
+and the next deploy serves the site there. The workflow copies that file only
+when it exists, because committing one before DNS resolves takes the github.io
+URL down too — Pages begins redirecting to a domain that cannot yet answer.
+
+Order matters: buy the domain, point DNS at GitHub, confirm it resolves, and
+only then add the file. Note that `.app` is HSTS-preloaded, so it is
+HTTPS-only — the site stays unreachable until GitHub finishes issuing the
+certificate, which is normally minutes but can take up to 24 hours. Nothing in
+the app assumes a path, so it works unchanged at a subpath or at a bare
+domain.
 
 ## Running it
 

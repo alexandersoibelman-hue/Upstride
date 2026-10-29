@@ -51,6 +51,11 @@ jobs:
           cp _site/index.html _site/standalone.html
           cp manifest.webmanifest _site/
           touch _site/.nojekyll
+          # A CNAME file at the repo root switches the site onto a custom
+          # domain. It is copied only if present, because publishing one before
+          # DNS resolves takes the github.io URL down with it: Pages starts
+          # redirecting there and the domain does not answer yet.
+          [ -f CNAME ] && cp CNAME _site/ || true
           # Sources published alongside for reading, not for the app to load.
           cp -r styles src _site/
 
