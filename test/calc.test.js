@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import {
   BACKFILL_DAYS, KCAL_PER_KG, addDays, dayKey, dayTotals, daysAgo,
   earnedBadges, goalStats, hasAnyData, isEditable, progressStats, streakStats,
-  stripSyncedValues, BADGE_MILESTONES,
+  stripSyncedValues, countSyncedDays, BADGE_MILESTONES,
   TREND_RANGES, trendSeries, topDeficitDays, firstLoggedDay, weekStart,
 } from '../src/calc.js';
 import { normalizeBridgePayload } from '../src/integrations/appleHealth.js';
@@ -334,6 +334,22 @@ test('the kilo badges are gone, replaced by percentage milestones', () => {
 });
 
 /* --------------------------------------------------- clearing synced data */
+
+test('only days holding integration values count as synced', () => {
+  assert.equal(countSyncedDays({
+    [day(0)]: { manualEaten: 2000, manualBurned: 2500 },
+    [day(-1)]: { manualEaten: 2100, appleEaten: 1900 },
+    [day(-2)]: { whoopBurned: 2600 },
+  }), 2);
+});
+
+test('a manual-only day missing the synced keys entirely is not counted', () => {
+  // Imported JSON need not carry explicit nulls, and `!== null` passes for
+  // undefined — which counted every manual day as synced.
+  assert.equal(countSyncedDays({ [day(0)]: { manualEaten: 2000 } }), 0);
+  assert.equal(countSyncedDays({ [day(0)]: { manualEaten: 2000, appleEaten: null } }), 0);
+  assert.equal(countSyncedDays({}), 0);
+});
 
 test('clearing synced data keeps what you typed and drops what synced', () => {
   const days = stripSyncedValues({

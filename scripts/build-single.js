@@ -28,19 +28,22 @@ const args = process.argv.slice(2);
 const FULL = args.includes('--full');
 const OUT = path.resolve(ROOT, args.find((a) => !a.startsWith('--')) || 'dist/weightfun.html');
 
-/** Dependency order: a module may only rely on ones above it. */
+/**
+ * Dependency order: a module may only rely on ones above it.
+ *
+ * src/integrations/* is deliberately absent — those clients have no UI since
+ * the Sync screen was removed, so bundling them would only add dead weight to
+ * every page load. They stay in the repo, and under test, for when the relay
+ * is wired back up.
+ */
 const MODULES = [
   'src/calc.js',
-  'src/integrations/whoop.js',
-  'src/integrations/appleHealth.js',
   'src/ui/dom.js',
   'src/ui/autosave.js',
   'src/state.js',
-  'src/integrations/sync.js',
   'src/views/home.js',
   'src/views/trends.js',
   'src/views/profile.js',
-  'src/views/integrations.js',
   'src/main.js', // must be last: this one actually runs things
 ];
 

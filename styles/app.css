@@ -405,57 +405,12 @@ input::placeholder { color: var(--fg-dim); }
 .btn-row { display: flex; gap: 10px; }
 .btn-row > .btn { flex: 1; }
 
-/* -------------------------------- Toggle -------------------------------- */
+/* ---------------------------- Label rows -------------------------------- */
 
-.row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  padding: 13px 0;
-  border-bottom: 1px solid var(--line-soft);
-}
-.row:last-child { border-bottom: 0; }
-.row__text { min-width: 0; }
 .row__title { font-size: 14.5px; font-weight: 650; }
 .row__sub { font-size: 12px; color: var(--fg-dim); margin-top: 2px; line-height: 1.45; }
 
-.switch { position: relative; flex: 0 0 auto; width: 50px; height: 30px; }
-.switch input { position: absolute; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; z-index: 2; }
-.switch__track {
-  position: absolute; inset: 0;
-  border-radius: 999px;
-  background: var(--line);
-  transition: background .2s ease;
-}
-.switch__track::after {
-  content: "";
-  position: absolute;
-  top: 3px; left: 3px;
-  width: 24px; height: 24px;
-  border-radius: 50%;
-  background: #fff;
-  transition: transform .2s cubic-bezier(.22,1,.36,1);
-}
-.switch input:checked + .switch__track { background: var(--accent); }
-.switch input:checked + .switch__track::after { transform: translateX(20px); }
-.switch input:focus-visible + .switch__track { box-shadow: var(--ring); }
-
-/* ----------------------------- Integrations ----------------------------- */
-
-.intg__head { display: flex; align-items: center; gap: 13px; margin-bottom: 4px; }
-.intg__icon {
-  width: 46px; height: 46px;
-  flex: 0 0 auto;
-  border-radius: 14px;
-  display: grid;
-  place-items: center;
-  font-size: 22px;
-  background: var(--bg-elev);
-  border: 1px solid var(--line);
-}
-.intg__name { font-size: 17px; font-weight: 700; }
-.intg__meta { font-size: 12px; color: var(--fg-dim); margin-top: 2px; }
+/* -------------------------------- Pills --------------------------------- */
 
 .pill {
   display: inline-flex; align-items: center; gap: 6px;
@@ -468,26 +423,6 @@ input::placeholder { color: var(--fg-dim); }
 }
 .pill--on { color: var(--accent); border-color: rgba(110,231,135,.35); background: rgba(110,231,135,.1); }
 .pill--warn { color: var(--warn); border-color: rgba(255,180,84,.35); background: rgba(255,180,84,.1); }
-.pill__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-
-.note {
-  font-size: 12px;
-  line-height: 1.55;
-  color: var(--fg-muted);
-  background: var(--bg-elev);
-  border: 1px solid var(--line-soft);
-  border-left: 3px solid var(--violet);
-  border-radius: 10px;
-  padding: 11px 13px;
-}
-.note code {
-  font-family: var(--font-num);
-  font-size: 11px;
-  background: rgba(255,255,255,.06);
-  padding: 1px 5px;
-  border-radius: 5px;
-  word-break: break-all;
-}
 
 /* ------------------------------- Badges --------------------------------- */
 

@@ -7,15 +7,13 @@
  * "what's on screen" a pure function of state.
  */
 
-import { getState, getStorageStatus, subscribe, update } from './state.js';
+import { getState, getStorageStatus, subscribe } from './state.js';
 import { todayKey } from './calc.js';
 import { clear, el, toast } from './ui/dom.js';
 import { flushSaves, installFlushHooks } from './ui/autosave.js';
 import { renderHome } from './views/home.js';
 import { renderTrends } from './views/trends.js';
 import { renderProfile } from './views/profile.js';
-import { renderIntegrations } from './views/integrations.js';
-import { startScheduler } from './integrations/sync.js';
 
 /**
  * When the app is embedded in a host page we don't control (a single-file
@@ -33,7 +31,6 @@ if (!document.querySelector('meta[name="viewport"]')) {
 const ROUTES = {
   home: renderHome,
   trends: renderTrends,
-  integrations: renderIntegrations,
   profile: renderProfile,
 };
 
@@ -119,19 +116,3 @@ installFlushHooks();
 
 render();
 
-/* ----------------------------------------------------------------- startup */
-
-// The relay sends us back with #whoop=connected after a successful authorization.
-if (location.hash.includes('whoop=connected')) {
-  history.replaceState({}, '', location.pathname + location.search);
-  update((s) => {
-    s.integrations.whoop.enabled = true;
-    s.integrations.whoop.mode = 'relay';
-    s.integrations.whoop.lastError = null;
-    s.integrations.whoop.lastSync = null; // force an immediate first pull
-  });
-  toast('Whoop connected');
-  navigate('integrations');
-}
-
-startScheduler();

@@ -19,7 +19,7 @@ full-screen like a native app.
 
 ```bash
 npm start            # http://localhost:4173
-npm test             # 70 unit tests: calorie engine + relay helpers
+npm test             # 72 unit tests: calorie engine + relay helpers
 npm run build:single # one self-contained dist/weightfun.html
 ```
 
@@ -103,10 +103,6 @@ The three data entry points — initial, current, and goal weight. `initial − 
 is the weight-loss target that drives every number on the Home Screen. Integration
 toggles live here too, alongside export / import / reset.
 
-### Integrations
-
-Apple Health and Whoop, both on a 2-hour refresh.
-
 ## How the numbers work
 
 ```
@@ -132,7 +128,24 @@ Today and the previous **6 days** are editable (7 days total). Older days lock
 to read-only; future days are never editable. This is also the window each sync
 refreshes, so a late-arriving Whoop score still lands on the right day.
 
-## Integrations, honestly
+## Integrations — not currently in the app
+
+There is **no Sync screen**. Apple Health and Whoop never worked end to end
+without a deployed relay, so rather than leave a tab that only ever reported
+failure, the screen was removed and the app is manual-entry only.
+
+What survives: `relay/` (the Worker and its setup guide), the `src/integrations/`
+clients, and their tests. Nothing imports them, and the build deliberately
+leaves them out of the bundle — see `MODULES` in `scripts/build-single.js`. The
+day model still carries `appleEaten` and `whoopBurned`, and the Home day editor
+still itemises them when present, so bringing the screen back is wiring, not a
+rewrite.
+
+Profile keeps a **Clear imported data** button, shown only if a day still holds
+values an integration wrote, so anything left behind by the old screen can be
+dropped without touching what was typed by hand.
+
+The rest of this section is why a relay is required at all, and stays accurate.
 
 **Neither source can be reached from a browser.** Both go through a small relay
 Worker you deploy yourself — see **[relay/README.md](relay/README.md)** for the
@@ -202,8 +215,8 @@ src/
   main.js               router, render loop, app bootstrap
   state.js              localStorage store
   calc.js               deficit maths, streaks, badges, trend series, dates
-  views/                home · trends · profile · integrations
-  integrations/
+  views/                home · trends · profile
+  integrations/         not bundled — kept for when the relay is wired up
     whoop.js            relay client + simulator
     appleHealth.js      bridge client, payload normalisation
     sync.js             2-hour scheduler, merge + write

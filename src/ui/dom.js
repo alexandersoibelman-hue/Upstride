@@ -67,27 +67,6 @@ export function card(label, children, className = '') {
   ]);
 }
 
-export function switchToggle(checked, onChange, ariaLabel) {
-  return el('span.switch', {}, [
-    el('input', {
-      type: 'checkbox',
-      checked: checked || null,
-      'aria-label': ariaLabel,
-      onChange: (e) => onChange(e.target.checked),
-    }),
-    el('span.switch__track', { 'aria-hidden': 'true' }),
-  ]);
-}
-
-export function settingRow(title, sub, control) {
-  return el('div.row', {}, [
-    el('div.row__text', {}, [
-      el('div.row__title', { text: title }),
-      sub && el('div.row__sub', { text: sub }),
-    ]),
-    control,
-  ]);
-}
 
 /** Number field that reports `null` when emptied. */
 export function numberField(label, value, onInput, { placeholder = '0', unit = '', hint = '' } = {}) {

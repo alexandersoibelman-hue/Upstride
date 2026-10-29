@@ -121,6 +121,18 @@ export function hasAnyData(entry) {
 }
 
 /**
+ * How many days carry a value written by an integration rather than typed.
+ *
+ * Tests the field the way hasAnyData does: a plain `!== null` also passes for
+ * `undefined`, which counts every manual-only day as synced on any state that
+ * did not come through setManualDay — imported JSON, for one.
+ */
+export function countSyncedDays(days) {
+  return Object.values(days).filter((entry) => ['appleEaten', 'whoopBurned']
+    .some((f) => entry?.[f] !== null && entry?.[f] !== undefined)).length;
+}
+
+/**
  * Drop every integration-sourced value, keeping what the user typed.
  *
  * Days left with nothing at all are removed entirely rather than kept as empty
