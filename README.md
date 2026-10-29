@@ -307,6 +307,21 @@ Everything the app itself holds stays in `localStorage` on the device, and there
 is no analytics. Use **Export** in Profile for a backup — clearing browser data
 wipes your history.
 
+### Moving the log between URLs
+
+`localStorage` is per-origin, so a log does not follow the app to a different
+hostname — switching host looks exactly like the data being wiped, though
+nothing is deleted and the old URL still has it.
+
+Profile offers two routes. **Copy backup** / **Paste backup** → **Restore**
+moves it as text via the clipboard, which is the one that holds up on iOS,
+where blob downloads and file pickers are unreliable. **Export file** /
+**Import file** does the same through a JSON file. Both are round-tripped in
+the browser tests across two origins.
+
+Restore rejects anything that is not a valid backup and leaves the existing
+log untouched.
+
 The relay is the one exception, and only if you deploy it: it stores your Whoop
 tokens and your Dietary Energy figures in your own Cloudflare account, under your
 own credentials. The Whoop client secret never reaches the browser. The relay

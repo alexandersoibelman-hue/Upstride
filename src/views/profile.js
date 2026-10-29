@@ -128,6 +128,53 @@ function dataCard(state, rerender) {
     toast('Exported');
   };
 
+  /**
+   * Text backup. Moving the log between two URLs is the common case, and
+   * localStorage is per-origin so it does not travel on its own. iOS Safari
+   * handles blob downloads and file pickers poorly, so a copy/paste route is
+   * the one that can be relied on from a phone.
+   */
+  const restoreBox = el('textarea', {
+    rows: '4',
+    placeholder: 'Paste a backup here, then tap Restore',
+    spellcheck: 'false',
+    autocapitalize: 'off',
+    autocomplete: 'off',
+    hidden: true,
+    style: {
+      width: '100%', marginTop: '10px', padding: '11px 13px',
+      borderRadius: '12px', border: '1px solid var(--line)',
+      background: 'var(--bg-elev)', color: 'var(--fg)',
+      fontFamily: 'var(--font-num)', fontSize: '13px', resize: 'vertical',
+    },
+  });
+
+  const copyBackup = async () => {
+    const text = exportJSON();
+    try {
+      await navigator.clipboard.writeText(text);
+      toast('Backup copied — paste it into the other URL');
+    } catch {
+      // No clipboard permission, or an insecure context: show the text so it
+      // can be selected by hand rather than failing silently.
+      restoreBox.hidden = false;
+      restoreBox.value = text;
+      restoreBox.select();
+      toast('Copy the text shown below');
+    }
+  };
+
+  const restore = () => {
+    const text = restoreBox.value.trim();
+    if (!text) { toast('Paste a backup first'); return; }
+    try {
+      importJSON(text);
+      toast('Backup restored');
+    } catch {
+      toast('That does not look like an Upstride backup');
+    }
+  };
+
   const storage = getStorageStatus();
   // Only reachable for anyone who ran the old sync screen before it was
   // removed; it lets them drop those values without losing what they typed.
@@ -151,8 +198,21 @@ function dataCard(state, rerender) {
           + 'and then whenever it would hurt to lose.',
     }),
     el('div.btn-row', { style: { marginTop: '14px' } }, [
-      el('button.btn', { type: 'button', text: 'Export', onClick: download }),
-      el('button.btn', { type: 'button', text: 'Import', onClick: () => fileInput.click() }),
+      el('button.btn', { type: 'button', text: 'Copy backup', onClick: copyBackup }),
+      el('button.btn', {
+        type: 'button',
+        text: 'Paste backup',
+        onClick: () => {
+          restoreBox.hidden = !restoreBox.hidden;
+          if (!restoreBox.hidden) restoreBox.focus();
+        },
+      }),
+    ]),
+    restoreBox,
+    el('div.btn-row', { style: { marginTop: '10px' } }, [
+      el('button.btn', { type: 'button', text: 'Restore', onClick: restore }),
+      el('button.btn', { type: 'button', text: 'Export file', onClick: download }),
+      el('button.btn', { type: 'button', text: 'Import file', onClick: () => fileInput.click() }),
     ]),
     syncedDays > 0 && el('button.btn.btn--block', {
       type: 'button',
