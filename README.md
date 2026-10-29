@@ -11,23 +11,34 @@ dependencies — it's static files and `localStorage`. Syncing real Whoop and Ap
 Health data additionally needs a small relay you deploy yourself; see below for
 why that's unavoidable.
 
-**Live:** <https://alexandersoibelman-hue.github.io/upstride/> — deployed from
+**Live:** <https://alexandersoibelman-hue.github.io/Upstride/> — deployed from
 this branch on every push. Add it to your phone's home screen and it runs
 full-screen like a native app.
 
 ### Moving to a custom domain
 
-Put the bare hostname in a `CNAME` file at the repo root, e.g. `upstride.app`,
-and the next deploy serves the site there. The workflow copies that file only
-when it exists, because committing one before DNS resolves takes the github.io
-URL down too — Pages begins redirecting to a domain that cannot yet answer.
+Target: **upstride.au**.
 
-Order matters: buy the domain, point DNS at GitHub, confirm it resolves, and
-only then add the file. Note that `.app` is HSTS-preloaded, so it is
-HTTPS-only — the site stays unreachable until GitHub finishes issuing the
-certificate, which is normally minutes but can take up to 24 hours. Nothing in
-the app assumes a path, so it works unchanged at a subpath or at a bare
-domain.
+1. At the registrar, point the apex at GitHub Pages (four A records), and add
+   `www` as a CNAME to `alexandersoibelman-hue.github.io`.
+2. Repo **Settings → Pages → Custom domain** → `upstride.au` → Save. GitHub
+   runs its own DNS check here and reports precisely what is wrong, so this
+   step — not a hand-copied IP list — is the authority on whether DNS is right.
+3. Once that check passes, put the bare hostname in a `CNAME` file at the repo
+   root. The deploy copies it when present. With the Pages source set to
+   GitHub Actions the custom domain can otherwise be cleared by a later
+   deploy, so the file is what makes it stick.
+
+Order matters: a CNAME committed before DNS resolves takes the github.io URL
+down too, because Pages immediately begins redirecting to a domain that cannot
+yet answer.
+
+`.au` is not HSTS-preloaded, so unlike `.app` the site stays reachable over
+HTTP while GitHub issues the certificate. Tick **Enforce HTTPS** once it has.
+
+Nothing in the app assumes a path — every asset reference is relative and the
+deployed page is a single self-contained file — so it serves unchanged from a
+subpath or a bare domain.
 
 ## Running it
 
