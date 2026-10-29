@@ -11,13 +11,17 @@ dependencies — it's static files and `localStorage`. Syncing real Whoop and Ap
 Health data additionally needs a small relay you deploy yourself; see below for
 why that's unavoidable.
 
-**Live:** <https://upstride.au> — deployed from this branch on every push.
-The github.io URL redirects here. Add it to your phone's home screen and it runs
+**Live:** <https://alexandersoibelman-hue.github.io/Upstride/> — deployed from
+this branch on every push.
+
+`upstride.au` is registered but not yet serving: the registrar has not released
+DNS control of the domain, so there is nothing to point at GitHub. The CNAME
+file is held back until it does. Add it to your phone's home screen and it runs
 full-screen like a native app.
 
 ### Moving to a custom domain
 
-Live at **upstride.au**. The steps that got it there, for reference:
+Target: **upstride.au**. Not yet live — DNS is still pending at the registrar.
 
 1. At the registrar, point the apex at GitHub Pages (four A records), and add
    `www` as a CNAME to `alexandersoibelman-hue.github.io`.
@@ -25,7 +29,7 @@ Live at **upstride.au**. The steps that got it there, for reference:
    runs its own DNS check here and reports precisely what is wrong, so this
    step — not a hand-copied IP list — is the authority on whether DNS is right.
 3. Once that check passes, put the bare hostname in a `CNAME` file at the repo
-   root — done. The deploy copies it when present. With the Pages source set
+   root. The deploy copies it when present. With the Pages source set
    to GitHub Actions the custom domain can otherwise be cleared by a later
    deploy, so the file is what makes it stick.
 
